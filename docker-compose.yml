@@ -1,0 +1,46 @@
+version: "3"
+
+volumes:
+  mariadb: {}
+  teamspeak: {}
+
+services:
+  teamspeak:
+    build:
+      context: .
+      dockerfile: ./compose/teamspeak/Dockerfile
+    image: aoa_ts3
+    container_name: teamspeak
+    depends_on:
+      - mariadb
+    restart: always
+    volumes:
+      - teamspeak:/var/lib/mysql
+    ports:
+      - 9987:9987/udp
+      - 10011:10011
+      - 30033:30033
+    environment:
+      - TS3SERVER_DB_PLUGIN=ts3db_mariadb
+      - TS3SERVER_DB_SQLCREATEPATH=create_mariadb
+      - TS3SERVER_DB_HOST=mariadb
+      - TS3SERVER_DB_USER=${MYSQL_USER}
+      - TS3SERVER_DB_PASSWORD=${MYSQL_PASSWORD}
+      - TS3SERVER_DB_NAME=${MYSQL_DATABASE}
+      - TS3SERVER_DB_WAITUNTILREADY=30
+      - TS3SERVER_LICENSE=accept
+
+  mariadb:
+    build:
+      context: .
+      dockerfile: ./compose/mariadb/Dockerfile
+    image: aoa_mariadb
+    container_name: mariadb
+    restart: always
+    volumes:
+      - mariadb:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
