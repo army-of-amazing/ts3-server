@@ -1,0 +1,19 @@
+version: 2
+updates:
+  # ----------------------------------------------#
+  #                  Dockerfiles                  #
+  # ----------------------------------------------#
+
+  # teamspeak
+  - package-ecosystem: "docker"
+    directory: "/compose/teamspeak"
+    schedule:
+      interval: "monthly"
+    open-pull-requests-limit: 10
+
+  # mariadb
+  - package-ecosystem: "docker"
+    directory: "/compose/mariadb"
+    schedule:
+      interval: "monthly"
+    open-pull-requests-limit: 10
