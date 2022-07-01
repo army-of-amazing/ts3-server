@@ -1,1 +1,1 @@
-FROM teamspeak:3.12.1
+FROM teamspeak:3.13.7
